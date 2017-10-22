@@ -1,0 +1,17 @@
+{% if forms %}
+    {% for f in forms %}
+        {{ f.media }}
+    {% endfor %}
+    {% else %}
+        {{ form.media }}
+{% endif %}
+<form action="." method="post"> {% csrf_token %}
+    {% if forms %}
+        {% for f in forms %}
+            {{ f.as_p }}
+        {% endfor %}
+        {% else %}
+         {{ form.as_p }}
+    {% endif %}
+   <input type="Submit" value="Submit">
+</form>

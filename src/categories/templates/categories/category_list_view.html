@@ -1,0 +1,12 @@
+{% extends 'master.html' %}
+
+{% block content %}
+    {% for obj in object_list %}
+        <a href="{% url 'threads:detail-list' pk=obj.pk %}">{{ obj.title }} <br/>
+        description : {{ obj.description }} <br/>
+        threads : {{ obj.thread_count }} <br/>
+        posts in all threads : {{ obj.thread_total_post_count }} <br/>
+        last active thread : {{ obj.latest_thread }} <br/>
+            Last poster in thread : {{ obj.latest_thread.last_post.user }} </a>
+    {% endfor %}
+{% endblock content %}

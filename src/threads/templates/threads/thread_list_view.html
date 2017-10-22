@@ -1,0 +1,10 @@
+{% extends 'master.html' %}
+{% block content %}
+    {% for obj in object_list %}
+            <a href="{% url 'threads:detail' pk=obj.pk %}"{{ obj.category }}>
+            {{ obj.title }}
+            {{ obj.post_count }} replies </br> </a>
+    {% endfor %}
+            {% include 'includes/generic-form.html' with forms=forms %}
+
+{% endblock content %}
