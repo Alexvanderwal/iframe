@@ -13,14 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf import settings
+from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.conf.urls import url, include
+from django.conf.urls.static import static
 
 from . import views
 
-urlpatterns = [
-    url(r'^$', views.ThreadListView.as_view(), name='list'),
-    url(r'^(?P<pk>\d+)/list/$', views.ThreadListView.as_view(), name='detail-list'),
-    url(r'^(?P<pk>\d+)/thread/$', views.ThreadDetailView.as_view(), name='detail'),
+if settings.DEBUG:
+    urlpatterns = [
+        url(r'^register/$', views.UserCreateView.as_view(), name='create'),
+        url(r'^profile/(?P<pk>\d+)/$', views.UserDetailView.as_view(), name='profile')
 
-]
+
+    ]
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

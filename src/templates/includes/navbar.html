@@ -1,4 +1,5 @@
-
+{% load i18n %}
+{% load thumbnail %}
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand">IFRAME</a>
@@ -19,7 +20,23 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Home</a>
                 </li>
-
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownUserLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             <img src="{{ user.profile.avatar|thumbnail_url:'nav_avatar' }}" class="rounded-circle" > {{ user.username|title }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownUserLink">
+                            <a class="dropdown-item" href="{% url 'logout' %}"> {% trans 'Logout' %} </a>
+                            <a class="dropdown-item" href="{% url 'users:profile' user.pk %}"> {% trans 'Profile' %}</a>
+                        </div>
+                    </li>
+                {% else %}
+                      <li class="nav-item">
+                        <a class="nav-link" href={% url 'login' %}> {% trans 'Login' %} </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

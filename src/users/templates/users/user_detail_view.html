@@ -1,0 +1,6 @@
+{% extends 'master.html' %}
+{% load thumbnail %}
+{% block content %}
+     <img src="{{ object.profile.avatar|thumbnail_url:'profile_avatar' }}" class="rounded" >
+
+{% endblock content %}

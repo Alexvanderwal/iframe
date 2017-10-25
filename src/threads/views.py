@@ -34,12 +34,12 @@ class ThreadListView(ListView, ModelFormMixin):
 
     def get(self, request, *args, **kwargs):
         self.object = None
-        self.form = ThreadForm(initial={'starter': self.request.user})
+        if self.request.user.is_authenticated:
+            self.form = ThreadForm(initial={'starter': self.request.user})
+            self.initial_post_form = PostForm(
+                initial={'user': self.request.user})
 
-        self.initial_post_form = PostForm(
-            initial={'user': self.request.user})
-
-        return ListView.get(self,request,*args,**kwargs)
+        return ListView.get(self, request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         # When the form is submitted, it will enter here
@@ -66,26 +66,11 @@ class ThreadListView(ListView, ModelFormMixin):
     def get_context_data(self, *args, **kwargs):
         # Just include the form
         context = super(ThreadListView, self).get_context_data(*args, **kwargs)
-        context['form'] = self.form
-        context['initial_post_form'] = self.initial_post_form
-        context['forms'] = [self.form, self.initial_post_form]
+        if self.request.user.is_authenticated:
+            context['form'] = self.form
+            context['initial_post_form'] = self.initial_post_form
+            context['forms'] = [self.form, self.initial_post_form]
         return context
-
-
-    # def form_valid(self, form):
-    #     # context = self.get_context_data()
-    #     # thread_form = context['thread_form']
-    #     # initial_post_form = context['initial_post_form']
-    #     #
-    #     # if all((thread_form.is_valid(), initial_post_form.is_valid())):
-    #     #     with transaction.atomic:
-    #     #         initial_post = initial_post_form.save()
-    #     #         thread = thread_form.save(commit=False)
-    #     #         thread.initial_post = initial_post
-    #     #         self.get_success_url()
-    #     # else:
-    #     #     pass
-    #     return self.render_to_response(self.get_context_data(form=form))
 
 
 class ThreadDetailView(FormMixin, DetailView):
@@ -98,16 +83,14 @@ class ThreadDetailView(FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        print(self.object)
-        context['form'] = PostForm(initial={'user': self.request.user, 'thread': self.object})
-
+        if self.request.user.is_authenticated:
+            context['form'] = PostForm(initial={'user': self.request.user, 'thread': self.object})
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
         if form.is_valid():
-            print(form.cleaned_data.get('content'))
             return self.form_valid(form)
         else:
             return self.form_invalid(form)

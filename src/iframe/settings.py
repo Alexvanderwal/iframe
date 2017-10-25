@@ -49,7 +49,9 @@ INSTALLED_APPS = [
     'froala_editor',
     # Application specific apps
     'threads',
-    'categories'
+    'categories',
+    'users',
+    'easy_thumbnails'
 
 ]
 
@@ -134,3 +136,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_REDIRECT_URL = '/'
+
+# # Froala JQuery
+# FROALA_INCLUDE_JQUERY = False
+
+# Thumbnailer settings
+THUMBNAIL_ALIASES = {
+    '': {
+        'nav_avatar': {'size': (30, 30), 'crop': False},
+        'profile_avatar': {'size': (330, 330), 'crop': False},
+    },
+}

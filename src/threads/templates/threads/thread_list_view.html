@@ -5,6 +5,7 @@
             {{ obj.title }}
             {{ obj.post_count }} replies </br> </a>
     {% endfor %}
-            {% include 'includes/generic-form.html' with forms=forms %}
-
+    {% if request.user.is_authenticated %}
+        {% include 'includes/generic-form.html' with forms=forms %}
+    {% endif %}
 {% endblock content %}

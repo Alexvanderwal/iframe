@@ -16,14 +16,18 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 
-urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('threads.urls', namespace='threads')),
-    url(r'^categories/', include('categories.urls', namespace='categories')),
-    url(r'^froala_editor/', include('froala_editor.urls')),
-]
 if settings.DEBUG:
+    urlpatterns = [
+        url(r'^login/$', auth_views.login, name='login'),
+        url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+        url(r'^admin/', admin.site.urls),
+        url(r'^users/', include('users.urls', namespace='users')),
+        url(r'^categories/', include('categories.urls', namespace='categories')),
+        url(r'^', include('threads.urls', namespace='threads')),
+        url(r'^froala_editor/', include('froala_editor.urls')),
+    ]
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
