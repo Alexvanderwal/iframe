@@ -146,6 +146,7 @@ LOGIN_REDIRECT_URL = '/'
 THUMBNAIL_ALIASES = {
     '': {
         'nav_avatar': {'size': (30, 30), 'crop': False},
+        'thread_list_avatar': {'size': (50, 50), 'crop': False},
         'profile_avatar': {'size': (330, 330), 'crop': False},
     },
 }

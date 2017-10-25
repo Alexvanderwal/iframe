@@ -25,6 +25,9 @@ class Thread(models.Model):
     def post_count(self):
         return self.post_set.all().exclude(id=self.initial_post_id).count()
 
+    @property
+    def get_last_post(self):
+        return self.last_post or self.initial_post
 
     def __str__(self):
         return self.title
@@ -39,6 +42,7 @@ def post_save_thread_model_receiver(sender, instance, created, *args, **kwargs):
             if created:
                 initial_post = instance.initial_post
                 initial_post.thread = instance
+
                 initial_post.save()
             category = instance.category
             category.latest_thread = instance
@@ -65,6 +69,9 @@ class Post(models.Model):
     def update_last_post(self, post):
         self.thread.last_post = post
         self.thread.save()
+
+    def get_date(self):
+        return self.date_modified if self.date_modified > self.date_created else self.date_created
 
     def __str__(self):
         return str('{0} on {1}'.format(self.user.username, self.thread))
