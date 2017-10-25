@@ -20,4 +20,5 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.CategoryListView.as_view(), name='list'),
+    url(r'^create/$', views.CategoryCreateView.as_view(), name='create'),
 ]

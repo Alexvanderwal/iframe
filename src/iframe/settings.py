@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party libraries
     'froala_editor',
-    'bootstrap4',
     # Application specific apps
     'threads',
     'categories'

@@ -8,6 +8,7 @@ class Category(models.Model):
     description = models.CharField(max_length=150, blank=True)
     active = models.BooleanField(default=True)
     latest_thread = models.ForeignKey('threads.Thread', null=True, blank=True, related_name='latest_thread')
+
     class Meta:
         verbose_name_plural = 'categories'
 
