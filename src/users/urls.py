@@ -24,7 +24,7 @@ from . import views
 
 if settings.DEBUG:
     urlpatterns = [
-        url(r'^register/$', views.UserCreateView.as_view(), name='create'),
+        url(r'^register/$', views.UserCreateView.as_view(), name='register'),
         url(r'^profile/(?P<pk>\d+)/$', views.UserDetailView.as_view(), name='profile')
 
 

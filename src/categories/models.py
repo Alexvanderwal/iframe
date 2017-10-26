@@ -24,3 +24,4 @@ class Category(models.Model):
         for thread in threads:
             count += thread.post_count
         return str(count)
+

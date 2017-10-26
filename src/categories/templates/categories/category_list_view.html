@@ -1,12 +1,31 @@
 {% extends 'master.html' %}
-
+{% load i18n %}
+{% load thumbnail %}
 {% block content %}
+    <div class="list-group">
     {% for obj in object_list %}
-        <a href="{% url 'threads:detail-list' pk=obj.pk %}">{{ obj.title }} <br/>
-        description : {{ obj.description }} <br/>
-        threads : {{ obj.thread_count }} <br/>
-        posts in all threads : {{ obj.thread_total_post_count }} <br/>
-        last active thread : {{ obj.latest_thread }} <br/>
-            Last poster in thread : {{ obj.latest_thread.last_post.user }} </a>
+        <a href="{% url 'threads:detail-list' pk=obj.pk %}" class="list-group-item list-group-item-action">
+            <div class="d-flex justify-content-start">
+             <div class="d-flex flex-column pl-1 w-50">
+                 <h4 class="mb-1">{{ obj.title }}</h4>
+                 <small>{{ obj.description }}</small>
+            </div>
+            {% with obj.latest_thread.get_last_post as post %}
+                 <div class="d-flex align-items-end">
+                     <img src="{{ post.user.profile.avatar|thumbnail_url:'thread_list_avatar' }}" class="rounded ">
+                     <div class="d-flex flex-column pl-2">
+                         <div>{{ post.user.username }}</div>
+                         <small>{{ post.get_date }}</small>
+                     </div>
+                </div>
+                <div class="d-flex ml-auto align-items-end">
+                    <small><i class="fa fa-comments pr-1" aria-hidden="true"></i> {{ obj.thread_total_post_count }}  {% trans 'posts' %} </small>
+                    <small class="pl-1">{{ obj.thread_count }}  {% trans 'threads' %} </small>
+                </div>
+            {% endwith %}
+            </div>
+        </a>
     {% endfor %}
+    </div>
+
 {% endblock content %}
