@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth import get_user_model, authenticate, login
@@ -36,3 +36,9 @@ class UserDetailView(DetailView):
     model = User
     template_name = 'users/user_detail_view.html'
     context_object_name = 'object'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(
+            User,
+            profile__slug=self.kwargs['slug'],
+        )

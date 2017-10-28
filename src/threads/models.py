@@ -1,8 +1,9 @@
 from django.db import models, transaction, IntegrityError
 from django.conf import settings
 # Create your models here.
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.utils import timezone
+from django.utils.text import slugify
 from froala_editor.fields import FroalaField
 
 from .choices import PinStatus
@@ -10,7 +11,7 @@ from .choices import PinStatus
 
 class Thread(models.Model):
     title = models.CharField(max_length=100)
-    slug = models.SlugField()
+    slug = models.SlugField(editable=False, blank=True)
     starter = models.ForeignKey(settings.AUTH_USER_MODEL)
     category = models.ForeignKey('categories.Category', on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -35,6 +36,13 @@ class Thread(models.Model):
     class Meta:
         unique_together = ('title', 'category')
 
+
+def pre_save_thread_model_receiver(sender, instance, *args, **kwargs):
+    if (not instance.slug and instance.title) or (slugify(instance.title) != instance.slug):
+        instance.slug = slugify(instance.title)
+        instance.save()
+
+
 @transaction.atomic
 def post_save_thread_model_receiver(sender, instance, created, *args, **kwargs):
     try:
@@ -49,9 +57,6 @@ def post_save_thread_model_receiver(sender, instance, created, *args, **kwargs):
             category.save()
     except IntegrityError:
         pass
-
-
-post_save.connect(post_save_thread_model_receiver, Thread)
 
 
 class Post(models.Model):
@@ -93,6 +98,6 @@ def post_save_post_model_receiver(sender, instance, created, *args, **kwargs):
         pass
 
 
-
-
+pre_save.connect(pre_save_thread_model_receiver, Thread)
+post_save.connect(post_save_thread_model_receiver, Thread)
 post_save.connect(post_save_post_model_receiver, Post)

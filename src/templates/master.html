@@ -14,9 +14,20 @@
     {% block extra_css %}{% endblock %}
 {#    <link rel="shortcut icon" href="{% static 'ico/favicon.png' %}">#}
 </head>
+
 <body class="{% block body_class %} {% endblock body_class %}">
     {% include 'includes/navbar.html' %}
     <main>
+      <header class="container-fluid bg-info">
+        <div class="container h-50 md-5">
+         <h3>
+         {% block header_message %}
+             Homepage
+         {% endblock %}</h3>
+      </div>
+      </div>
+    </header>
+
         <div class="container mt-3">
       {% block content %}
       {% endblock content %}

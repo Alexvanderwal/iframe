@@ -16,9 +16,9 @@ class ThreadListView(ListView, ModelFormMixin):
     ordering = ['-date_updated']
 
     def get_success_url(self):
-        if self.kwargs.get('pk'):
-            return reverse('threads:detail-list', kwargs={'pk': self.kwargs.get('pk')})
-        else:
+        try:
+            return reverse('threads:detail-list', kwargs={'slug': self.kwargs.get('slug')})
+        except:
             return reverse('threads:list')
 
     def get_queryset(self):
@@ -26,11 +26,10 @@ class ThreadListView(ListView, ModelFormMixin):
         using this to handle different URL paramters.
         :return:
         """
-        if self.kwargs.get('pk'):
+        if self.kwargs.get('slug'):
             # TODO: Verander dit naar een query manager ofzo
-            return Thread.objects.filter(category__id=self.kwargs.get('pk')).order_by('-date_updated')
-        else:
-            return super().get_queryset()
+            return Thread.objects.filter(category__slug=self.kwargs.get('slug')).order_by('-date_updated')
+        return super().get_queryset()
 
     def get(self, request, *args, **kwargs):
         self.object = None
@@ -79,7 +78,7 @@ class ThreadDetailView(FormMixin, DetailView):
     template_name = 'threads/thread_detail_view.html'
 
     def get_success_url(self):
-        return reverse('threads:detail', kwargs={'pk': self.object.pk})
+        return reverse('threads:detail', kwargs={'slug': self.object.slug})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()

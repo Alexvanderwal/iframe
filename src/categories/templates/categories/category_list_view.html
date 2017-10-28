@@ -1,10 +1,13 @@
 {% extends 'master.html' %}
 {% load i18n %}
 {% load thumbnail %}
+{% block header_message %}
+    Categories
+{% endblock %}
 {% block content %}
     <div class="list-group">
     {% for obj in object_list %}
-        <a href="{% url 'threads:detail-list' pk=obj.pk %}" class="list-group-item list-group-item-action">
+        <a href="{% url 'threads:detail-list' slug=obj.slug %}" class="list-group-item list-group-item-action">
             <div class="d-flex justify-content-start">
              <div class="d-flex flex-column pl-1 w-50">
                  <h4 class="mb-1">{{ obj.title }}</h4>

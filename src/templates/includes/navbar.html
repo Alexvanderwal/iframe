@@ -6,19 +6,13 @@
          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="'collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link active" href="{% url 'threads:list' %}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'categories:list' %}">All categories</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -28,7 +22,7 @@
                              <img src="{{ user.profile.avatar|thumbnail_url:'nav_avatar' }}" class="rounded-circle" > {{ user.username|title }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownUserLink">
-                            <a class="dropdown-item" href="{% url 'users:profile' user.pk %}"><i class="fa fa-user" aria-hidden="true"></i> {% trans 'Profile' %}</a>
+                            <a class="dropdown-item" href="{% url 'users:profile' user.profile.slug %}"><i class="fa fa-user" aria-hidden="true"></i> {% trans 'Profile' %}</a>
                             <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> {% trans 'Logout' %} </a>
                         </div>
                     </li>
