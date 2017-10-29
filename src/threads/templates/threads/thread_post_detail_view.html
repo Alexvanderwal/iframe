@@ -1,2 +1,20 @@
- {{ post.content | safe }} <br/>
- {{ post.date_modified }} by {{ post.user }}
+<li class="list-group-item justify-content-between">
+     <div class="d-flex justify-content-start">
+            <img src="{{ obj.starter.profile.avatar|thumbnail_url:'thread_list_avatar' }}" class="rounded ">
+             <div class="d-flex flex-column pl-1 w-50">
+                 <h4 class="mb-1">{{ obj.title }}</h4>
+                 <small>{{ obj.category }}</small>
+
+            </div>
+     </div>
+    <div class="row">
+        <div class="col-2">
+            {{ post.content | safe }} <br/>
+            {{ post.date_modified }} by {{ post.user }}
+        </div>
+        <div class="col-10">
+            {{ post.content | safe }} <br/>
+            {{ post.date_modified }} by {{ post.user }}
+        </div>
+    </div>
+</li>

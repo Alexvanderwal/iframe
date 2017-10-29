@@ -18,7 +18,7 @@ class Profile(models.Model):
     description = models.CharField(
         _('Description'), max_length=150, help_text=_('Add a sassy description for your profile'), blank=True)
     avatar = models.ImageField(
-        upload_to=os.path.join(settings.FILE_UPLOAD_PATH, 'display_pictures'), max_length=500, blank=True)
+        upload_to='display_pictures', max_length=500, blank=True)
 
     def __str__(self):
         return str(self.user.username)

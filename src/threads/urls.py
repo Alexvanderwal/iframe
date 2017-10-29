@@ -20,7 +20,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.ThreadListView.as_view(), name='list'),
-    url(r'^(?P<slug>[-\w]+)/list/$', views.ThreadListView.as_view(), name='detail-list'),
-    url(r'^(?P<slug>[-\w]+)/thread/$', views.ThreadDetailView.as_view(), name='detail'),
+    url(r'^(?P<slug>[-\w]+)/threads/$', views.ThreadListView.as_view(), name='detail-list'),
+    url(r'^thread/(?P<slug>[-\w]+)/$', views.ThreadDetailView.as_view(), name='detail'),
 
 ]
