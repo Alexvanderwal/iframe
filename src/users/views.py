@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth import get_user_model, authenticate, login
 
+from .models import Profile
 from .forms import SignUpForm
 # Create your views here.
 
@@ -33,12 +34,17 @@ class UserCreateView(CreateView):
 
 
 class UserDetailView(DetailView):
-    model = User
+    model = Profile
     template_name = 'users/user_detail_view.html'
     context_object_name = 'object'
 
     def get_object(self, queryset=None):
         return get_object_or_404(
-            User,
-            profile__slug=self.kwargs['slug'],
+            Profile,
+            slug=self.kwargs['slug'],
         )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context

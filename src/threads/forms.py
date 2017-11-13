@@ -7,7 +7,7 @@ from .models import Post, Thread
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['user', 'content', 'thread']
+        fields = ['id', 'user', 'content', 'thread']
         widgets = {
             'user': forms.HiddenInput(),
             'thread': forms.HiddenInput()

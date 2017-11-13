@@ -19,8 +19,11 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.ThreadListView.as_view(), name='list'),
-    url(r'^(?P<slug>[-\w]+)/threads/$', views.ThreadListView.as_view(), name='detail-list'),
+    url(r'^$', views.ThreadListCreateView.as_view(), name='list'),
+    url(r'^(?P<slug>[-\w]+)/threads/$', views.ThreadListCreateView.as_view(), name='detail-list'),
     url(r'^thread/(?P<slug>[-\w]+)/$', views.ThreadDetailView.as_view(), name='detail'),
+    url(r'^api/post/(?P<id>[-\w]+)/like/$', views.PostLikeAPIToggle.as_view(), name='like-api'),
+    url(r'^api/post/(?P<pk>[-\w]+)/update/$', views.UpdatePost.as_view(), name='update-api'),
+    url(r'^api/post/(?P<pk>[-\w]+)/delete/$', views.DeletePost.as_view(), name='delete-api'),
 
 ]

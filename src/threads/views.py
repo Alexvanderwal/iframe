@@ -1,19 +1,34 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.views.generic import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormMixin, ModelFormMixin
 # Create your views here.
 from django.db import transaction, IntegrityError
+
+
+from .permissions import IsOwner
+from .serializers import PostSerializer
 from .models import Thread, Post
 from .forms import PostForm, ThreadForm
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions, generics
+from django.contrib.auth.models import User
 
 
-class ThreadListView(ListView, ModelFormMixin):
+class ThreadListCreateView(ListView, ModelFormMixin):
+    """
+    Listview that loads a form to create a Thread.
+    Shows either all Threads, or category specific threads.
+
+    """
     model = Thread
     form_class = ThreadForm
     template_name = 'threads/thread_list_view.html'
     ordering = ['-date_updated']
+    paginate_by = 40
 
     def get_success_url(self):
         try:
@@ -22,22 +37,23 @@ class ThreadListView(ListView, ModelFormMixin):
             return reverse('threads:list')
 
     def get_queryset(self):
-        """
-        using this to handle different URL paramters.
-        :return:
-        """
         if self.kwargs.get('slug'):
-            # TODO: Verander dit naar een query manager ofzo
-            return Thread.objects.filter(category__slug=self.kwargs.get('slug')).order_by('-date_updated')
+            self.queryset = Thread.objects.filter(category__slug=self.kwargs.get('slug')).order_by('-date_updated')
         return super().get_queryset()
 
     def get(self, request, *args, **kwargs):
+        """
+        Overriding this is required to have ModelFormMixin work with ListView
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
         self.object = None
         if self.request.user.is_authenticated:
             self.form = ThreadForm(initial={'starter': self.request.user})
             self.initial_post_form = PostForm(
                 initial={'user': self.request.user})
-
         return ListView.get(self, request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -64,7 +80,9 @@ class ThreadListView(ListView, ModelFormMixin):
 
     def get_context_data(self, *args, **kwargs):
         # Just include the form
-        context = super(ThreadListView, self).get_context_data(*args, **kwargs)
+        context = super(ThreadListCreateView, self).get_context_data(*args, **kwargs)
+        if self.kwargs.get('slug'):
+            context['category'] = self.kwargs.get('slug')
         if self.request.user.is_authenticated:
             context['form'] = self.form
             context['initial_post_form'] = self.initial_post_form
@@ -84,6 +102,7 @@ class ThreadDetailView(FormMixin, DetailView):
         context = super().get_context_data()
         if self.request.user.is_authenticated:
             context['form'] = PostForm(initial={'user': self.request.user, 'thread': self.object})
+        print(context['form'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -97,3 +116,59 @@ class ThreadDetailView(FormMixin, DetailView):
     def form_valid(self, form):
         form.save()
         return super(ThreadDetailView, self).form_valid(form)
+
+
+class UpdatePost(generics.RetrieveUpdateAPIView):
+    """
+    View one post, with the option to edit.
+
+    * Requires the owner of the Post, or a Admin.
+    * Requires token authentication.
+
+    """
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsOwner,)
+
+
+class DeletePost(generics.RetrieveDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsOwner,)
+
+
+class PostLikeAPIToggle(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    """
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None, id=None):
+        id = self.kwargs.get("id")
+        obj = get_object_or_404(Post, id=id)
+        url_ = obj.get_thread_url()
+        user = self.request.user
+        updated = False
+        liked = False
+
+        if user.is_authenticated():
+            if user in obj.likes.all():
+                obj.likes.remove(user)
+            else:
+                liked = True
+                obj.likes.add(user)
+            updated = True
+
+        data = {
+            "updated": updated,
+            "liked": liked
+        }
+
+        return Response(data)

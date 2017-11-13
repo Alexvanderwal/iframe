@@ -11,17 +11,18 @@ from .forms import CategoryForm
 
 
 class CategoryListView(ListView, ModelFormMixin):
+
     model = Category
     form_class = CategoryForm
     template_name = 'categories/category_list_view.html'
+    paginate_by = 40
 
     def get_success_url(self):
         return reverse('categories:list')
 
     def get(self, request, *args, **kwargs):
         self.object = None
-        if self.request.user.is_authenticated and self.request.user.is_superuser:
-            self.form = CategoryForm(None)
+        self.form = CategoryForm(None)
         return ListView.get(self, request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -39,8 +40,8 @@ class CategoryListView(ListView, ModelFormMixin):
     def get_context_data(self, *args, **kwargs):
         # Just include the form
         context = super().get_context_data(*args, **kwargs)
-        if self.request.user.is_authenticated and self.request.user.is_superuser:
-            context['form'] = self.form
+
+        context['form'] = self.form
         return context
 
 

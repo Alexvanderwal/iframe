@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,"public/static")
 
 MEDIA_URL = '/media/'
@@ -47,13 +46,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party libraries
     'froala_editor',
+    'easy_thumbnails',
+    'widget_tweaks',
+    'rest_framework',
+    'django_user_agents',
+    "django_bootstrap_breadcrumbs",
     # Application specific apps
     'threads',
     'categories',
     'users',
-    'easy_thumbnails'
+
 
 ]
+
+# USER_AGENTS_CACHE = 'default'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,7 +70,24 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
+    'middleware.activeuser_middleware.ActiveUserMiddleware',
 ]
+
+# Setup caching per Django docs. In actuality, you'd probably use memcached instead of local memory.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'default-cache'
+    }
+}
+
+# Number of seconds of inactivity before a user is marked offline
+USER_ONLINE_TIMEOUT = 300
+
+# Number of seconds that we will keep track of inactive users for before
+# their last seen is removed from the cache
+USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
 
 ROOT_URLCONF = 'iframe.urls'
 
@@ -80,6 +104,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -147,6 +172,11 @@ THUMBNAIL_ALIASES = {
     '': {
         'nav_avatar': {'size': (30, 30), 'crop': False},
         'thread_list_avatar': {'size': (50, 50), 'crop': False},
-        'profile_avatar': {'size': (330, 330), 'crop': False},
+        'profile_avatar': {'size': (240, 240), 'crop': False},
+        'post_avatar_pc': {'size': (100, 100), 'crop': False},
+        'post_avatar_mobile': {'size': (75, 75), 'crop': False},
     },
 }
+
+USERS_ONLINE__TIME_IDLE = 60*5 # 5 minutes
+USERS_ONLINE__TIME_OFFLINE = 60*10 # 10 minutes

@@ -1,6 +1,39 @@
 {% extends 'master.html' %}
 {% load thumbnail %}
+{% load i18n %}
+
+{% block header_message %}
+    {% trans "Profile of " %} {{ object.user.username|title }}
+{% endblock %}
 {% block content %}
-     <img src="{{ object.profile.avatar|thumbnail_url:'profile_avatar' }}" class="rounded" >
+    <div class="row">
+        <div class="col-3">
+            <div class="d-flex flex-column">
+             <img src="{{ object.avatar|thumbnail_url:'profile_avatar' }}" class="rounded" style="max-width:170px;" >
+                <b>{% if object.role %}
+                    {{ object.role }}
+                {% endif %}</b>
+                <span style="max-width:170px;" class="badge mt-2 badge-pill {% if object.online %}badge-success{% else %}badge-danger{% endif %}">{{ object.online_status }}</span>
+                <div class=""></div>
+
+            <div>{% trans 'Post count' %} {{ object.post_count }}</div>
+            <div>{% trans 'started' %} {{ object.thread_count }}  {% trans 'threads' %}</div>
+            </div>
+        </div>
+        <div class="col-8 list-group">
+         <h1>{% trans 'User post Feed' %}</h1>
+            {% for post in object.user.posts.all %}
+                <a class="list-group-item list-group-item-action mt-4" href="{% url 'threads:detail' slug=post.thread.slug %}#{{ post.id }}" >
+                     <div class="d-flex">
+                         <div class="mr-3">{{ post.thread.title }}</div>
+                         <div class="mr-3">{{ post.thread.category }}</div>
+                         <div class="ml-auto">{{ post.get_date }}</div>
+                     </div>
+                  {{ post.content|safe }}
+                </a>
+            {% endfor %}
+        </div>
+        </div>
+    </div>
 
 {% endblock content %}

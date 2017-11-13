@@ -1,0 +1,15 @@
+.circle-online {
+	border-radius: 50%;
+	width: 13px;
+	height: 13px;
+    background-color: #009926;
+	/* width and height can be anything, as long as they're equal */
+}
+
+.circle-offline {
+	border-radius: 50%;
+	width: 13px;
+	height: 13px;
+    background-color: #a31311;
+	/* width and height can be anything, as long as they're equal */
+}
