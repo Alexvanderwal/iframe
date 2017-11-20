@@ -29,5 +29,6 @@ if settings.DEBUG:
         url(r'^categories/', include('categories.urls', namespace='categories')),
         url(r'^', include('threads.urls', namespace='threads')),
         url(r'^froala_editor/', include('froala_editor.urls')),
+        url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     ]
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

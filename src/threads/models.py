@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from froala_editor.fields import FroalaField
 from tinymce.models import HTMLField
-
+from ckeditor_uploader.fields import RichTextUploadingField
 from .choices import PinStatus
 
 
@@ -66,7 +66,7 @@ class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='likes', null=True, blank=True)
-    content = HTMLField()
+    content = RichTextUploadingField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='posts')
     thread = models.ForeignKey('threads.Thread',  null=True, blank=True)
 

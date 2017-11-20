@@ -33,6 +33,8 @@ STATIC_ROOT = os.path.join(BASE_DIR,"public/static")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,"public/media")
 
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
 FILE_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'uploads/')
 
 # Application definition
@@ -45,13 +47,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 3rd party libraries
-    'froala_editor',
     'easy_thumbnails',
     'widget_tweaks',
     'rest_framework',
     'django_user_agents',
     "django_bootstrap_breadcrumbs",
-    "tinymce",
+    "ckeditor",
+    "ckeditor_uploader",
     # Application specific apps
     'threads',
     'categories',
@@ -184,3 +186,54 @@ THUMBNAIL_ALIASES = {
 
 USERS_ONLINE__TIME_IDLE = 60*5 # 5 minutes
 USERS_ONLINE__TIME_OFFLINE = 60*10 # 10 minutes
+
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'skin': 'moono',
+        # 'skin': 'office2013',
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_YourCustomToolbarConfig': [
+            {'name': 'document', 'items': ['Source', '-', 'Save', '-', 'Templates']},
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            '/',
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat', 'TextColor', 'BGColor']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+                       'Language']},
+            {'name': 'insert',
+             'items': ['Image', 'Table', 'Smiley', 'SpecialChar', 'PageBreak' ]},
+        ],
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        'height': '100%',
+        'width': '100%',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+        # 'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join([
+            'uploadimage', # the upload image feature
+            # your extra plugins here
+            'div',
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            # 'devtools',
+            'widget',
+            'lineutils',
+            'clipboard',
+            'dialog',
+            'dialogui',
+            'elementspath'
+        ]),
+    }
+}
