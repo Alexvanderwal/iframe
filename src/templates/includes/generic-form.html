@@ -5,14 +5,14 @@
     {% else %}
         {{ form.media }}
 {% endif %}
-<form action="{% if action %}{{ action }} {% else %} . {% endif %}" enctype="multipart/form-data" method="post" class="pt-2" id="default-form">
+<form action="{% if action %}{{ action }}{% else %}.{% endif %}" enctype="multipart/form-data" method="post" class="pt-2" id="default-form">
     {% csrf_token %}
     {% if forms %}
         {% for f in forms %}
             {% include 'includes/bs4-form.html' with form=f %}
         {% endfor %}
-        {% else %}
-          {% include 'includes/bs4-form.html' with form=form %}
+    {% else %}
+      {% include 'includes/bs4-form.html' with form=form %}
     {% endif %}
-   <input type="Submit" value="Submit">
+   <input class='btn btn-default' type="Submit" value="Submit">
 </form>

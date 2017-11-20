@@ -25,7 +25,9 @@ from . import views
 if settings.DEBUG:
     urlpatterns = [
         url(r'^register/$', views.UserCreateView.as_view(), name='register'),
-        url(r'^profile/(?P<slug>[-\w]+)/$', views.UserDetailView.as_view(), name='profile')
+        url(r'^profile/(?P<slug>[-\w]+)/$', views.UserDetailView.as_view(), name='profile'),
+        url(r'^profile/edit/(?P<slug>[-\w]+)/$', views.UserAndProfileUpdateView.as_view(), name='edit'),
+        url(r'^profile/(?P<slug>[-\w]+)/edit/password/$', views.update_password, name='edit-password'),
 
 
     ]

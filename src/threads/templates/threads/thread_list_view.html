@@ -15,13 +15,13 @@
              <a href="{% url 'users:profile' slug=obj.starter.profile.slug %}" class="d-flex justify-content-start col-2 col-md-2 col-lg-1">
                 <img src="{{ obj.starter.profile.avatar|thumbnail_url:'thread_list_avatar' }}" class="rounded" style="max-height: 50px;">
              </a>
-             <a href="{% url 'threads:detail' slug=obj.slug %}"  class="d-flex flex-column pl-1 col-7">
+             <a href="{% url 'threads:detail' slug=obj.slug %}"  class="d-flex flex-column pl-1 col-7 mr-auto">
                      <h4 class="mb-1">{{ obj.title }}</h4>
                      <small>{{ obj.category }}</small>
                 </a>
 
                 {% with obj.get_last_post as post %}
-                 <a href="{% url 'users:profile' slug=post.user.profile.slug %}" class="d-flex  pl-3">
+                 <a href="{% url 'users:profile' slug=post.user.profile.slug %}" class="d-flex pl-3">
                      <img src="{{ post.user.profile.avatar|thumbnail_url:'thread_list_avatar' }}" class="rounded"  style='max-height: 50px;'>
                      <div class="d-flex flex-column  pl-2">
                          <div>{{ post.user.username }}</div>

@@ -1,0 +1,8 @@
+{% extends 'master.html' %}
+{% load i18n %}
+{% block content %}
+     <a href="{% url 'users:edit-password' object.slug %}">
+        <button>{% trans 'Edit your password' %}</button>
+         </a>
+    {% include 'includes/generic-form.html' with forms=forms %}
+{% endblock %}

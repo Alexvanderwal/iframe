@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_user_agents',
     "django_bootstrap_breadcrumbs",
+    "tinymce",
     # Application specific apps
     'threads',
     'categories',
@@ -152,7 +153,10 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+DATE_FORMAT = "M d, Y"
+
+# Overrides DATE_FORMAT
+USE_L10N = False
 
 USE_TZ = True
 

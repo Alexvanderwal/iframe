@@ -1,10 +1,13 @@
-from django.shortcuts import render, get_object_or_404
-from django.views.generic.edit import CreateView
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
-from django.contrib.auth import get_user_model, authenticate, login
-
+from django.contrib.auth import get_user_model, authenticate, login, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from .models import Profile
-from .forms import SignUpForm
+from .forms import SignUpForm, ProfileForm, UserForm
+
 # Create your views here.
 
 # Using this to reference the user prevents everything breaking if we implement a custom User Model.
@@ -48,3 +51,80 @@ class UserDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         return context
+
+
+class UserAndProfileUpdateView(UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'users/edit-view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_form'] = UserForm(self.request.POST or None, instance=self.object.user)
+        context['profile_form'] = ProfileForm(self.request.POST, instance=self.object)
+        context['forms'] = [context.get('user_form'), context.get('profile_form')]
+        print('lol')
+        return context
+
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+
+        form1 = context['user_form']
+        form2 = context['profile_form']
+        print(form1.is_valid())
+        print(form2.is_valid())
+        print(form2.errors)
+
+        if all((form1.is_valid(), form2.is_valid())):
+            user = form1.save()
+            print(user)
+            profile = form2.save(commit=False)
+            profile.user = user
+            profile.save()
+            # TODO: Must b fixed
+            return redirect('users:profile',slug=profile.slug)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def form_invalid(self, form):
+        print('komt hier ofzo')
+
+
+@login_required
+def update_password(request, slug=None):
+    if request.method == 'POST':
+        form = PasswordChangeForm(User.objects.get(profile__slug=slug), request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            # messages.success(request, 'Your password was successfully updated!')
+            return redirect('users:update_password')
+        else:
+            pass
+            # messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'users/update-password.html', {
+        'form': form
+    })
+
+
+# class UpdatePassword(UpdateView):
+#     form_class = PasswordChangeForm
+#     model = User
+#     template_name =
+#     success_url = '/'
+#     slug_field = 'profile__slug'
+#
+#
+#     def form_valid(self, form):
+#         user = form.save()
+#         update_session_auth_hash(self.request, user)
+#         return super().form_valid(form)
+
+# class UserEditView(UpdateView):
+#     model = Profile
+#     form_class = UserEditForm
+#     context_object_name = 'object'
+#     template_name = 'users/edit-view.html'

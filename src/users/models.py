@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
-    slug = models.SlugField(blank=True, editable=True)
+    slug = models.SlugField(blank=True, editable=False)
     description = models.CharField(
         _('Description'), max_length=150, help_text=_('Add a sassy description for your profile'), blank=True)
     avatar = models.ImageField(
