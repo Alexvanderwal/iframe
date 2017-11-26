@@ -1,45 +1,68 @@
 {% extends 'categories/category_list_view.html' %}
-{% load thumbnail %}
-{% load i18n %}
-{% load django_bootstrap_breadcrumbs %}
+{% load thumbnail i18n django_bootstrap_breadcrumbs %}
+
+{% block header_message %}
+    {% if homepage %}
+        Homepage
+    {% else %}
+        Threads of {{ category.title }}
+    {% endif %}
+{% endblock %}
+
 {% block breadcrumbs %}
     {{ block.super }}
+    {% if homepage %}
+        {% clear_breadcrumbs %}
+    {% endif %}
     {% url 'threads:detail-list' slug=category as thread_url %}
     {% breadcrumb "Threads" thread_url %}
 {% endblock breadcrumbs %}
+
 {% block content %}
     <ul class="list-group">
-    {% for obj in object_list %}
-         <li class="list-group-item">
-         <div class="row">
-             <a href="{% url 'users:profile' slug=obj.starter.profile.slug %}" class="d-flex justify-content-start col-2 col-md-2 col-lg-1">
-                <img src="{{ obj.starter.profile.avatar|thumbnail_url:'thread_list_avatar' }}" class="rounded" style="max-height: 50px;">
-             </a>
-             <a href="{% url 'threads:detail' slug=obj.slug %}"  class="d-flex flex-column pl-1 col-7 mr-auto">
-                     <h4 class="mb-1">{{ obj.title }}</h4>
-                     <small>{{ obj.category }}</small>
-                </a>
+        {% for obj in object_list %}
+            <li class="list-group-item">
+                <div class="row thread-item">
 
-                {% with obj.get_last_post as post %}
-                 <a href="{% url 'users:profile' slug=post.user.profile.slug %}" class="d-flex pl-3">
-                     <img src="{{ post.user.profile.avatar|thumbnail_url:'thread_list_avatar' }}" class="rounded"  style='max-height: 50px;'>
-                     <div class="d-flex flex-column  pl-2">
-                         <div>{{ post.user.username }}</div>
-                        <small>{{ post.get_date }}</small>
-                     </div>
-                </a>
-                <div class="d-flex ml-auto align-items-end">
-                    <i class="fa fa-comments pr-1" aria-hidden="true"></i>
-                    <small> {{ obj.post_count }} {% trans 'replies' %} </small>
+                    {# Post Creator. Minimal information to prevent clutter #}
+                    <a href="{% url 'users:profile' slug=obj.starter.profile.slug %}"
+                       class="d-flex justify-content-start col-2 col-md-2 col-lg-1 link">
+                        <img src="{{ obj.starter.profile.avatar|thumbnail_url:'thread_list_avatar' }}"
+                             class="rounded" style="max-height: 50px;">
+                    </a>
+
+                    {# High-level threadinformation #}
+                    <a href="{% url 'threads:detail' slug=obj.slug %}"
+                       class="d-flex flex-column pl-1 col-7 mr-auto link">
+                        <h4 class="mb-1">{{ obj.title }}</h4>
+                        <small>{{ obj.category }}</small>
+                    </a>
+
+                    {# Latest poster information #}
+                    {% with obj.get_last_post as post %}
+                     <a href="{% url 'users:profile' slug=post.user.profile.slug %}" class="d-flex pl-3 link">
+                         <img src="{{ post.user.profile.avatar|thumbnail_url:'thread_list_avatar' }}"
+                              class="rounded"  style='max-height: 50px;'>
+                         <div class="d-flex flex-column  pl-2">
+                             <div>{{ post.user.username }}</div>
+                            <small>{{ post.get_date }}</small>
+                         </div>
+                    </a>
+                    {% endwith %}
+
+                    {# Additional metrics #}
+                    <div class="d-flex ml-auto align-items-end mb-2">
+                        <i class="fa fa-comments pr-1" aria-hidden="true"></i>
+                        <small> {{ obj.post_count }} {% trans 'replies' %} </small>
+                    </div>
+
                 </div>
-                {% endwith %}
-
-         </div>
-        </li>
-    {% endfor %}
+            </li>
+        {% endfor %}
     {% include 'includes/pagination.html' %}
-
     </ul>
+    {# Form is loaded anyways, so we have to ensure only authenticated users will see this. This is why backend checks #}
+    {# Are of value, since this approach could be vulnerable to exploits #}
     {% if request.user.is_authenticated %}
         {% include 'includes/generic-form.html' with forms=forms %}
     {% endif %}

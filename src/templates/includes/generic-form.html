@@ -1,11 +1,7 @@
-{% if forms %}
-    {% for f in forms %}
-        {{ f.media }}
-    {% endfor %}
-    {% else %}
-        {{ form.media }}
-{% endif %}
-<form action="{% if action %}{{ action }}{% else %}.{% endif %}" enctype="multipart/form-data" method="post" class="pt-2" id="default-form">
+
+
+<form action="{% if action %}{{ action }}{% else %}.{% endif %}"
+      enctype="multipart/form-data" method="post" class="pt-2" id="default-form">
     {% csrf_token %}
     {% if forms %}
         {% for f in forms %}

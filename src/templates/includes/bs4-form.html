@@ -11,30 +11,38 @@
     {% endfor %}
   </div>
 {% endif %}
+    {% for field in form.visible_fields %}
+        {{ field.field.widget.input_type }}
+        {{ field.field.widget.path }}
+    {% if field.field.widget.input_type == 'checkbox' %}
+        <div class="form-check">
+        <label class="form-check-label">
+            {% render_field field class='form-check-input' %}
+            {{ field.label_tag }}
+        </label>
+        {% else %}
+        <div class="form-group">
+        {{ field.label_tag }}
 
-  <div class="form-group">
-  {% for field in form.visible_fields %}
-       <div class="form-group row">
-          {{ field.label_tag }}
+        {% if form.is_bound %}
+          {% if field.errors %}
+            {% render_field field class="form-control is-invalid" %}
+            {% for error in field.errors %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% else %}
 
-    {% if form.is_bound %}
-      {% if field.errors %}
-        {% render_field field class="form-control is-invalid" %}
-        {% for error in field.errors %}
-          <div class="invalid-feedback">
-            {{ error }}
-          </div>
-        {% endfor %}
-      {% else %}
-        {% render_field field class="form-control is-valid" %}
-      {% endif %}
-    {% else %}
-      {% render_field field class="form-control mr-auto" %}
+            {% render_field field class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+          {% render_field field class="form-control" %}
+        {% endif %}
     {% endif %}
-
     {% if field.help_text %}
       <small class="form-text text-muted">{{ field.help_text|safe }}</small>
     {% endif %}
+
   </div>
 {% endfor %}
-  </div>

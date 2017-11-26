@@ -1,25 +1,27 @@
 {% extends 'threads/thread_list_view.html' %}
-{% load staticfiles %}
-{% load i18n %}
-{% load django_bootstrap_breadcrumbs %}
-{% block breadcrumbs %}
-    {% with object.category.slug as category %}
-    {{ block.super }}
-    {% endwith %}
-        {% breadcrumb object.slug threads.views.ThreadListCreateView object.slug %}
+{% load staticfiles i18n django_bootstrap_breadcrumbs thumbnail %}
 
+{% block breadcrumbs %}
+    {# Referencing to the Category slug here as this is the reference the Master.html uses #}
+    {% with object.category.slug as category %}
+        {{ block.super }}
+    {% endwith %}
+    {% breadcrumb object.slug threads.views.ThreadListCreateView object.slug %}
 {% endblock breadcrumbs %}
+
 {% block header_message %}
-    {{ object.title }}
+    {% trans 'Thread:' %} {{ object.title }}
 {% endblock header_message %}
-{% load thumbnail %}
+
 {% block jquery %}
     <script src="{% static 'javascript/threads.js' %}"></script>
 {% endblock jquery %}
+
 {% block content %}
     <div class="d-flex pb-2">
         <button class="btn btn-info ml-auto" id="post-btn">{% trans 'New post' %}</button>
     </div>
+
     <ul class="list-group">
         {% for post in object.post_set.all %}
             {% include 'threads/thread_post_detail_view.html' with post=post %}
@@ -29,7 +31,5 @@
     {% if request.user.is_authenticated %}
         {% include 'includes/generic-form.html' with form=form %}
     {% endif %}
-<div id="delete-dialog" title="Deletion Dialog">
-  <p>Are you sure?</p>
-</div>
+
 {% endblock content %}

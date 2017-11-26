@@ -17,6 +17,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         var this_ = $(this);
+
         var form = $('#default-form');
         var postUpdateUrl = this_.attr('data-href');
 
@@ -25,8 +26,7 @@ $(document).ready(function() {
             method: "GET",
             data: {},
             success: function (data) {
-                $('.fr-view').html(data.content);
-                $('.fr-wrapper').removeClass('show-placeholder');
+                CKEDITOR.instances["id_content"].setData(data.content);
                 $(form).attr('action', 'update');
                 $(form).attr('data-href', $(this_).attr('data-href'));
             }
@@ -63,7 +63,9 @@ $(document).ready(function() {
     });
 
     $('#default-form').on('submit', function (e) {
+        // Hijacking to update a Post instead of created if the user is editing a post.
         var this_ = $(this);
+        console.log(CKEDITOR.instances["id_content"].getData());
         if (this_.attr("action") === 'update') {
             e.preventDefault();
 
@@ -80,7 +82,7 @@ $(document).ready(function() {
                 method: "PUT",
                 data:
                     {
-                        'content': $('.fr-view').html(),
+                        'content':  CKEDITOR.instances["id_content"].getData(),
                         'X-CSRFToken': csrftoken,
                         'csrftoken': csrftoken
                     },

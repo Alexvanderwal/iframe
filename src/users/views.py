@@ -66,7 +66,6 @@ class UserAndProfileUpdateView(UpdateView):
         print('lol')
         return context
 
-
     def form_valid(self, form):
         context = self.get_context_data()
 

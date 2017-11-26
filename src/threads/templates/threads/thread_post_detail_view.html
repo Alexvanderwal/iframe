@@ -3,23 +3,25 @@
 
 <li class="list-group-item md-2" id="{{ post.id }}">
 
+    {# Representation of Poster #}
     <div class="row">
         <div class="col-3 col-sm-3 col-md-2 col-lg-2 col-xl-2">
-            {% with post.user as user %}
-                <div class="d-flex flex-column">
-                    <a href="{% url 'users:profile' user.profile.slug %}">
-                         <img src="{% if request.user_agent.is_pc %}{{user.profile.avatar|thumbnail_url:'post_avatar_pc' }}
-                                    {% else %}{{user.profile.avatar|thumbnail_url:'post_avatar_mobile' }} {% endif %}" class="rounded" >
-                        <div class="font-weight-bold">{{ user.username | title }} </div>
-                            <div>{{ user.post_set.all }}</div>
-                        {{ user.profile.description | safe }}
-                        {% if user.is_staff %}
-                            <small>Staff</small>
-                        {% endif %}
-                    </a>
-                </div>
-            {% endwith %}
+        {% with post.user as user %}
+        <div class="d-flex flex-column">
+            <a href="{% url 'users:profile' user.profile.slug %}" class="link-invisble">
+                <img src="{% if request.user_agent.is_pc %} {{user.profile.avatar|thumbnail_url:'post_avatar_pc' }}
+                          {% else %} {{user.profile.avatar|thumbnail_url:'post_avatar_mobile' }}
+                          {% endif %}" class="rounded">
+                <div class="font-weight-bold link"> {{ user.username | title }} </div>
+                <div> {{ user.post_set.all }} </div>
+                <div> {{ user.profile.description | safe }} </div>
+                {% if user.is_staff %}
+                    <small>Staff</small>
+                {% endif %}
+            </a>
         </div>
+       {% endwith %}
+    </div>
 
         <div class="col-9 col-sm-9 col-md-10 col-lg-10 col-xl-10">
             <div class="d-flex mb-2">
@@ -59,4 +61,5 @@
                 {% endif %}
           </div>
     </div>
+
 </li>

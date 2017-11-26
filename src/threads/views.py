@@ -7,7 +7,6 @@ from django.views.generic.edit import FormMixin, ModelFormMixin
 # Create your views here.
 from django.db import transaction, IntegrityError
 
-
 from .permissions import IsOwner
 from .serializers import PostSerializer
 from .models import Thread, Post
@@ -42,16 +41,17 @@ class ThreadListCreateView(ListView, ModelFormMixin):
         return super().get_queryset()
 
     def get(self, request, *args, **kwargs):
-        """
-        Overriding this is required to have ModelFormMixin work with ListView
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
-        """
         self.object = None
+        # Just here to prevent update bugs, referencing to a object this way is more robust.
+        falseobj = Thread.objects.first()
+        self.Category = falseobj.category.__class__
+
+        initial_threadform_data = {'starter': self.request.user}
+        if self.kwargs.get('slug'):
+            initial_threadform_data['category'] = self.Category.objects.get(slug=self.kwargs.get('slug'))
         if self.request.user.is_authenticated:
-            self.form = ThreadForm(initial={'starter': self.request.user})
+            self.form = ThreadForm(
+                initial=initial_threadform_data)
             self.initial_post_form = PostForm(
                 initial={'user': self.request.user})
         return ListView.get(self, request, *args, **kwargs)
@@ -68,21 +68,21 @@ class ThreadListCreateView(ListView, ModelFormMixin):
             thread.save()
             self.get_success_url()
         else:
-            print('invalid')
-            print(self.thread_form.errors)
-            print(self.post_form.errors)
+            pass
             # TODO: Render the forms again with validation errors
-
-            # return self.render_to_response(self.get_context_data(form=self.form))
 
         # Whether the form validates or not, the view will be rendered by get()
         return self.get(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
+        falseobj = Thread.objects.first()
+        self.Category = falseobj.category.__class__
         # Just include the form
         context = super(ThreadListCreateView, self).get_context_data(*args, **kwargs)
         if self.kwargs.get('slug'):
-            context['category'] = self.kwargs.get('slug')
+            context['category'] = self.Category.objects.get(slug=self.kwargs.get('slug'))
+        else:
+            context['homepage'] = True
         if self.request.user.is_authenticated:
             context['form'] = self.form
             context['initial_post_form'] = self.initial_post_form
@@ -102,7 +102,6 @@ class ThreadDetailView(FormMixin, DetailView):
         context = super().get_context_data()
         if self.request.user.is_authenticated:
             context['form'] = PostForm(initial={'user': self.request.user, 'thread': self.object})
-        print(context['form'])
         return context
 
     def post(self, request, *args, **kwargs):

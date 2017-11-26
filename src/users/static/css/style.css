@@ -13,3 +13,17 @@
     background-color: #a31311;
 	/* width and height can be anything, as long as they're equal */
 }
+
+.list-group-item .link {color: #212529;}
+.list-group-item .link:hover {
+	color: #212529;
+    text-decoration: underline;
+}
+
+.list-group-item .link-invisble {
+    color: #212529;
+}
+.list-group-item .link-invisble:hover {
+    color: #212529;
+    text-decoration: none;
+}

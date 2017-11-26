@@ -1,45 +1,47 @@
 {% extends 'master.html' %}
-{% load i18n %}
-{% load thumbnail %}
-{% load django_bootstrap_breadcrumbs %}
+{% load i18n thumbnail django_bootstrap_breadcrumbs %}
+
 {% block header_message %}
-    Categories
+   {% trans 'Categories' %}
 {% endblock %}
+
 {% block breadcrumbs %}
     {{ block.super }}
     {% url 'categories:list' as category_url %}
     {% breadcrumb "Categories" category_url %}
 {% endblock breadcrumbs %}
+
 {% block content %}
     <ul class="list-group">
     {% for obj in object_list %}
-        <li class="list-group-item ">
+        <li class="list-group-item">
             <div class="d-flex justify-content-start">
-             <a href="{% url 'threads:detail-list' slug=obj.slug %}"  class="d-flex flex-column pl-1 w-50">
+
+            {# Basic Category information #}
+             <a href="{% url 'threads:detail-list' slug=obj.slug %}"  class="d-flex flex-column pl-1 w-50 link">
                  <h4 class="mb-1">{{ obj.title }}</h4>
                  <small>{{ obj.description }}</small>
             </a>
-            {% with obj.latest_thread.get_last_post as post %}
-                {% if post %}
-                 <a href="{% url 'users:profile' slug=post.user.profile.slug %}" class="d-flex align-items-end">
-                     <img src="{{ post.user.profile.avatar|thumbnail_url:'thread_list_avatar' }}" class="rounded ">
-                     <div class="d-flex flex-column pl-2">
-                         <div>{{ post.user.username }}</div>
-                         <small>{{ post.get_date }}</small>
-                     </div>
-                </a>
-                {% endif %}
-                <a href="{% url 'threads:detail-list' slug=obj.slug %}"  class="d-flex ml-auto align-items-end">
-                    <small><i class="fa fa-comments pr-1" aria-hidden="true"></i> {{ obj.thread_total_post_count }}  {% trans 'posts' %} </small>
-                    <small class="pl-1"> <i class="fa fa-newspaper-o pr-1" aria-hidden="true"></i>{{ obj.thread_count }}  {% trans 'threads' %} </small>
-                </a>
-            {% endwith %}
+
+            {#  Category specific Metrics #}
+            <a href="{% url 'threads:detail-list' slug=obj.slug %}"  class="d-flex ml-auto align-items-end link">
+                <small>
+                    <i class="fa fa-comments pr-1" aria-hidden="true"></i>
+                    {{ obj.thread_total_post_count }} {% trans 'posts' %}
+                </small>
+                <small class="pl-1">
+                    <i class="fa fa-newspaper-o pr-1" aria-hidden="true"></i>
+                    {{ obj.thread_count }} {% trans 'threads' %}
+                </small>
+            </a>
+
             </div>
         </li>
     {% endfor %}
+    {% include 'includes/pagination.html' %}
     </ul>
 
-    {% include 'includes/pagination.html' %}
+
     {% if request.user.is_authenticated and request.user.is_staff %}
         {% include 'includes/generic-form.html' %}
     {% endif %}
