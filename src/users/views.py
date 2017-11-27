@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic.edit import CreateView, UpdateView
@@ -53,12 +54,16 @@ class UserDetailView(DetailView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class UserAndProfileUpdateView(UpdateView):
     model = Profile
     form_class = ProfileForm
     template_name = 'users/edit-view.html'
 
+
     def get_context_data(self, **kwargs):
+        if self.object.user != self.request.user:
+            raise Http404
         context = super().get_context_data(**kwargs)
         context['user_form'] = UserForm(self.request.POST or None, instance=self.object.user)
         context['profile_form'] = ProfileForm(self.request.POST, instance=self.object)
@@ -92,8 +97,12 @@ class UserAndProfileUpdateView(UpdateView):
 
 @login_required
 def update_password(request, slug=None):
+    user = User.objects.get(profile__slug=slug)
+    if user != request.user:
+        raise Http404
+
     if request.method == 'POST':
-        form = PasswordChangeForm(User.objects.get(profile__slug=slug), request.POST)
+        form = PasswordChangeForm(user, request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
