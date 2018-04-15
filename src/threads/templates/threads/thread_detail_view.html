@@ -29,7 +29,7 @@
     </ul>
 
     {% if request.user.is_authenticated %}
-        {% include 'includes/generic-form.html' with form=form %}
+        {% include 'threads/new_thread_form.html' with form=form %}
     {% endif %}
 
 {% endblock content %}

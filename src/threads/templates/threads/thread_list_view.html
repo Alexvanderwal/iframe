@@ -64,6 +64,6 @@
     {# Form is loaded anyways, so we have to ensure only authenticated users will see this. This is why backend checks #}
     {# Are of value, since this approach could be vulnerable to exploits #}
     {% if request.user.is_authenticated %}
-        {% include 'includes/generic-form.html' with forms=forms %}
+           {% include 'threads/new_thread_form.html' with form=form %}
     {% endif %}
 {% endblock content %}

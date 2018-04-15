@@ -12,7 +12,6 @@
   </div>
 {% endif %}
     {% for field in form.visible_fields %}
-        {{ field.field.widget.input_type }}
         {{ field.field.widget.path }}
     {% if field.field.widget.input_type == 'checkbox' %}
         <div class="form-check">

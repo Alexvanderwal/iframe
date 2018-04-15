@@ -5,8 +5,6 @@ from django.db.models.signals import post_save, pre_save
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
-from froala_editor.fields import FroalaField
-from tinymce.models import HTMLField
 from ckeditor_uploader.fields import RichTextUploadingField
 from .choices import PinStatus
 
@@ -63,9 +61,12 @@ def post_save_thread_model_receiver(sender, instance, created, *args, **kwargs):
 
 
 class Post(models.Model):
+    """
+    Model representation of a singular post. This means ALL posts.
+    """
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='likes', null=True, blank=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='likes', blank=True)
     content = RichTextUploadingField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='posts')
     thread = models.ForeignKey('threads.Thread',  null=True, blank=True)

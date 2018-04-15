@@ -1,4 +1,6 @@
-
+{% block form_title %}
+Basic title
+{% endblock form_title %}
 
 <form action="{% if action %}{{ action }}{% else %}.{% endif %}"
       enctype="multipart/form-data" method="post" class="pt-2" id="default-form">
