@@ -12,3 +12,6 @@ src/db.sqlite3
 media
 
 public
+
+
+static/fontawesome
