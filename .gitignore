@@ -11,3 +11,4 @@ local_settings.py
 src/db.sqlite3
 media
 
+public
