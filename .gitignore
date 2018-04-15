@@ -1,4 +1,13 @@
-/uploads
+uploads/
+venv/
+src/public/media
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
 src/db.sqlite3
-src/public/**
+media
 
