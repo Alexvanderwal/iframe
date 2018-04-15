@@ -3,8 +3,8 @@ from django.core.cache import cache
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
 
-class ActiveUserMiddleware(MiddlewareMixin):
 
+class ActiveUserMiddleware(MiddlewareMixin):
     def process_request(self, request):
         current_user = request.user
         if request.user.is_authenticated():
