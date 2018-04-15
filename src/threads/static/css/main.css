@@ -1,0 +1,7 @@
+label[for='id_content'] {
+    display: block;
+}
+
+.django-ckeditor-widget {
+    width: 100%;
+}
