@@ -1,7 +1,10 @@
+certifi==2018.1.18
 Django==1.11.7
 django-bootstrap-breadcrumbs==0.8.2
 django-choices==1.6.0
+django-ckeditor==5.4.0
 django-froala-editor==2.7.1
+django-js-asset==1.0.0
 django-online-status==0.1.0
 django-rest-framework==0.1.0
 django-user-agents==0.3.2
@@ -11,8 +14,11 @@ easy-thumbnails==2.5
 gunicorn==19.7.1
 olefile==0.44
 Pillow==4.3.0
+pipenv==11.10.0
 pytz==2017.3
 PyYAML==3.12
 six==1.11.0
 ua-parser==0.7.3
 user-agents==1.1.0
+virtualenv==15.2.0
+virtualenv-clone==0.3.0

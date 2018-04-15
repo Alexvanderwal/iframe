@@ -1,3 +1,4 @@
 /uploads
-/src/db.sqlite3
-/src/public/
+src/db.sqlite3
+src/public/**
+
