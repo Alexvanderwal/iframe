@@ -17,6 +17,7 @@ Pillow==4.3.0
 pipenv==11.10.0
 pytz==2017.3
 PyYAML==3.12
+redis==2.10.6
 six==1.11.0
 ua-parser==0.7.3
 user-agents==1.1.0

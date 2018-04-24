@@ -16,6 +16,8 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions, generics
 from django.contrib.auth.models import User
 
+import sys
+from os import path
 
 class ThreadListCreateView(ListView, ModelFormMixin):
     """
@@ -38,7 +40,9 @@ class ThreadListCreateView(ListView, ModelFormMixin):
     def get_queryset(self):
         if self.kwargs.get('slug'):
             self.queryset = Thread.objects.filter(category__slug=self.kwargs.get('slug')).order_by('-date_updated')
-        return super().get_queryset()
+        queryset = super().get_queryset()
+
+        return queryset
 
     def get(self, request, *args, **kwargs):
         self.object = None
@@ -75,10 +79,13 @@ class ThreadListCreateView(ListView, ModelFormMixin):
         return self.get(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
+
         falseobj = Thread.objects.first()
         self.Category = falseobj.category.__class__
+
         # Just include the form
         context = super(ThreadListCreateView, self).get_context_data(*args, **kwargs)
+        context['categories'] = self.Category.objects.all()
         if self.kwargs.get('slug'):
             context['category'] = self.Category.objects.get(slug=self.kwargs.get('slug'))
         else:

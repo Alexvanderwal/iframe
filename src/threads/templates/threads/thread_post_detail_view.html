@@ -1,65 +1,79 @@
 {% load thumbnail %}
 {% load i18n %}
 
-<li class="list-group-item md-2" id="{{ post.id }}">
+<li class="" id="{{ post.id }}">
 
     {# Representation of Poster #}
-    <div class="row">
-        <div class="col-3 col-sm-3 col-md-2 col-lg-2 col-xl-2">
+    <div class='user-content'>
+        <div class='user-preview preview-thread-content'>
         {% with post.user as user %}
-        <div class="d-flex flex-column">
-            <a href="{% url 'users:profile' user.profile.slug %}" class="link-invisble">
-                <img src="{% if request.user_agent.is_pc %} {{user.profile.avatar|thumbnail_url:'post_avatar_pc' }}
-                          {% else %} {{user.profile.avatar|thumbnail_url:'post_avatar_mobile' }}
-                          {% endif %}" class="rounded">
-                <div class="font-weight-bold link"> {{ user.username | title }} </div>
-                <div> {{ user.post_set.all }} </div>
-                <div> {{ user.profile.description | safe }} </div>
-                {% if user.is_staff %}
-                    <small>Staff</small>
-                {% endif %}
-            </a>
-        </div>
+            <div class='user-image-display'>
+            <div class='thumbnail-image' style="background-image: url( {{ user.profile.avatar|thumbnail_url:'thread_list_avatar' }})"> </div>
+            <span class="dot green"> </span>
+            </div>
+            <div class='name-display'>
+            <div class='full-name'> <span>Started by</span> <span class="user-name"> {{ user.username }} </span> <span> on {{  post.get_date  }}</span> <span class="screen-reader-text">who is currently online</span> </div>
+            <span class="screen-reader-text">Has as status </span> <div class="user-description"> {{ user.profile.description }}</div>
+            </div>
+            </div>
+           <div class='text-container'>
+                <p>
+                 {{ post.content | safe }}
+                </p>
+           </div>
+{#        <div class="d-flex flex-column">#}
+{#            <a href="{% url 'users:profile' user.profile.slug %}" class="link-invisble">#}
+{#                <img src="{% if request.user_agent.is_pc %} {{user.profile.avatar|thumbnail_url:'post_avatar_pc' }}#}
+{#                          {% else %} {{user.profile.avatar|thumbnail_url:'post_avatar_mobile' }}#}
+{#                          {% endif %}" class="rounded">#}
+{#                <div class="font-weight-bold link"> {{ user.username | title }} </div>#}
+{#                <div> {{ user.post_set.all }} </div>#}
+{#                <div> {{ user.profile.description | safe }} </div>#}
+{#                {% if user.is_staff %}#}
+{#                    <small>Staff</small>#}
+{#                {% endif %}#}
+{#            </a>#}
+{#        </div>#}
        {% endwith %}
     </div>
 
-        <div class="col-9 col-sm-9 col-md-10 col-lg-10 col-xl-10">
-            <div class="d-flex mb-2">
-                <small>{% trans 'Posted on ' %}{{ post.get_date }}</small>
-
-                <div class="d-flex flex-column ml-auto">
-                    {% if user.is_authenticated %}
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" id="postDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="postDropdown">
-                                <button class="dropdown-item" type="button">{% trans 'More options to come' %}</button>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            {{ post.content | safe }}
-        </div>
-    </div>
-    <div class="row">
-      <div class="col-3 col-sm-3 col-md-2 col-lg-2 col-xl-2">
-     </div>
-      <div class="col-4">
-         likes:
-        <a class='like-btn' data-href="{{ post.get_api_like_url }}" data-likes="{{ post.likes.count }}">
-
-          {{ post.likes.count }} {% if request.user in post.likes.all %}{% trans 'Unlike' %} {% else %} {% trans 'Like' %}{% endif %}</a>
-      </div>
-          <div class="col-push pr-3 ml-auto">
-              {% if post.user == request.user or request.user.is_staff %}
-                  <button class="edit-post-btn btn btn-primary btn-sm ml-auto" data-href="{% url 'threads:update-api' pk=post.id %}">Edit post</button>
-                  {% if thread.initial_post != post %}
-                    <button class="delete-post-btn btn btn-danger btn-sm ml-auto" data-href="{% url 'threads:delete-api' pk=post.id %}">Delete post</button>
-                  {% endif %}
-                {% endif %}
-          </div>
-    </div>
+{#        <div class="col-9 col-sm-9 col-md-10 col-lg-10 col-xl-10">#}
+{#            <div class="d-flex mb-2">#}
+{#                <small>{% trans 'Posted on ' %}{{ post.get_date }}</small>#}
+{##}
+{#                <div class="d-flex flex-column ml-auto">#}
+{#                    {% if user.is_authenticated %}#}
+{#                        <div class="dropdown">#}
+{#                            <a class="dropdown-toggle" id="postDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                            </a>#}
+{##}
+{#                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="postDropdown">#}
+{#                                <button class="dropdown-item" type="button">{% trans 'More options to come' %}</button>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#            </div>#}
+{#            {{ post.content | safe }}#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="row">#}
+{#      <div class="col-3 col-sm-3 col-md-2 col-lg-2 col-xl-2">#}
+{#     </div>#}
+{#      <div class="col-4">#}
+{#         likes:#}
+{#        <a class='like-btn' data-href="{{ post.get_api_like_url }}" data-likes="{{ post.likes.count }}">#}
+{##}
+{#          {{ post.likes.count }} {% if request.user in post.likes.all %}{% trans 'Unlike' %} {% else %} {% trans 'Like' %}{% endif %}</a>#}
+{#      </div>#}
+{#          <div class="col-push pr-3 ml-auto">#}
+{#              {% if post.user == request.user or request.user.is_staff %}#}
+{#                  <button class="edit-post-btn btn btn-primary btn-sm ml-auto" data-href="{% url 'threads:update-api' pk=post.id %}">Edit post</button>#}
+{#                  {% if thread.initial_post != post %}#}
+{#                    <button class="delete-post-btn btn btn-danger btn-sm ml-auto" data-href="{% url 'threads:delete-api' pk=post.id %}">Delete post</button>#}
+{#                  {% endif %}#}
+{#                {% endif %}#}
+{#          </div>#}
+{#    </div>#}
 
 </li>

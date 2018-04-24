@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth import get_user_model, authenticate, login, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+import redis
 from .models import Profile
 from .forms import SignUpForm, ProfileForm, UserForm
 
