@@ -21,11 +21,11 @@
     {% include 'includes/navbar.html' %}
        <main role='main' id='main-content'>
       <header class="header">
-         <h3>
+         <h1>
          {% block header_message %}
              Homepage
          {% endblock %}
-         </h3>
+         </h1>
         <a class='create-thread' style='display:none' href='#default-form'> Make a thread </a>
       {% block breadcrumbs %}
               {% breadcrumb "Home" "/" %}

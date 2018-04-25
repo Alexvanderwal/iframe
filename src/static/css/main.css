@@ -317,6 +317,7 @@ figcaption {
 
 h3, h2 {
     margin: 0;
+    display: inline-block;
 }
 
 .create-thread {
@@ -379,7 +380,7 @@ h3, h2 {
 }
 
 .show-thread-detail:hover {
-    box-shadow: 0 10px 5px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 10px 5px -3px rgba(0,0,0,0.1);
 }
 
 
@@ -492,8 +493,15 @@ main {
     padding-left: 0em;
     padding-top: 0.9em;
     padding-bottom: .5em;
+    transition: .3s ease-in;
+    color: rgba(0,0,0,.84);
+    cursor: pointer;
 }
 
+.user-preview.preview-thread-content:hover {
+    
+    box-shadow: 0 3px 10px -3px rgba(0,0,0,0.3);
+}
 .user-preview.preview-thread-content .dot {
    left: 1.7em;
    top: 2.3em;
