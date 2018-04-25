@@ -23,15 +23,13 @@
     <h3> {{ object.title }} </h3>
     <span class="screen-reader-text">To go back, use shift + \ also known as (|) </span>
 
-   <div class="d-flex pb-2">
-       <button class="btn btn-info ml-auto" id="post-btn">{% trans 'New post' %}</button>
-   </div>
+ 
     <ul class='thread-messages'>
         {% for post in object.post_set.all %}
             {% include 'threads/thread_post_detail_view.html' with post=post %}
         {% endfor %}
     </ul>
-    {{ request.user }}
+
     {% if request.user.is_authenticated %}
     <form action="{% if action %}{{ action }}{% else %}{% url 'threads:detail' slug=object.slug %}{% endif %}"
       enctype="multipart/form-data" method="post" class="pt-2" id="default-form">

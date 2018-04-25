@@ -18,8 +18,13 @@
     {% breadcrumb "Threads" thread_url %}
 {% endblock breadcrumbs %}
 
+<!-- {{ category }} -->
 {% block content %}
-    <ol class='thread-list' title='most recent threads'>
+ {% if category %}
+    {{category.title}}
+ {% endif %}
+    <ol class='thread-list' title='most recent threads {% if category.title %}from the category {{category.title}} {% endif %}' >
+            <span class="screen-reader-text"> Press enter on a link to hear the details</span>
         {% for obj in object_list %}
         {% with obj.get_last_post as post %}
              <li class='thread-view'>

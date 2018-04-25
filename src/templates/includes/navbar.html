@@ -17,7 +17,7 @@
                {% endif %}
 
 {#                <img src="{{ user.profile.avatar|thumbnail_url:'nav_avatar' }}" class="rounded-circle" >#}
-               <div class="user-actions-bar">
+               <div {% if user.is_authenticated %} class="user-actions-bar" {% endif %}>
                     {% if user.is_authenticated %}
                 <a href="{% url 'users:profile' user.profile.slug %}">
                 <figure><svg class='icon' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 482.9 482.9" style="enable-background:new 0 0 482.9 482.9;" xml:space="preserve" width="512px" height="512px">

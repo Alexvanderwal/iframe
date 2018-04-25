@@ -1,7 +1,6 @@
 {% block form_title %}
     <h4> {{  title }} </h4>
 {% endblock form_title %}
-<h1> wtf</h1>
 <form action="{% if action %}{{ action }}{% else %}.{% endif %}"
       enctype="multipart/form-data" method="post" class="pt-2" id="default-form">
     {% csrf_token %}

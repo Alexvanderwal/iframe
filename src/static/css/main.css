@@ -386,6 +386,7 @@ h3 {
 .thread-view h3 {
     display: inline-block;
     font-size: 1.3em;
+    margin-bottom: .5em;
     color: var(--nav-color)
 }
 
@@ -489,7 +490,7 @@ main {
 
 .user-preview.preview-thread-content {
     padding-left: 0em;
-    padding-top: 0.5em;
+    padding-top: 0.9em;
     padding-bottom: .5em;
 }
 
