@@ -15,10 +15,9 @@
 {##}
 
 <script src="{% static 'javascript/csrf.js' %}" > </script>
-
+<span id='url' style='display:none'> {% url 'threads:detail' slug=object.slug %} </span>
 <script src="{% static 'javascript/threads.js' %}"></script>
 <script src="{% static 'javascript/main.js' %}" > </script>
-
 
     <span class="screen-reader-text">You are currently viewing the thread</span>
     <h3> {{ object.title }} </h3>
@@ -32,12 +31,16 @@
             {% include 'threads/thread_post_detail_view.html' with post=post %}
         {% endfor %}
     </ul>
+    {{ request.user }}
+    {% if request.user.is_authenticated %}
     <form action="{% if action %}{{ action }}{% else %}{% url 'threads:detail' slug=object.slug %}{% endif %}"
       enctype="multipart/form-data" method="post" class="pt-2" id="default-form">
       {% csrf_token %}
       {{ form }}
       <input class='btn btn-default' type="Submit" value="Submit">
     </form>
+    {% endif %}
+
     <!-- {{ user.is_authenticated }}
     {% if user.is_authenticated %} -->
         <!-- {% include 'threads/respond_to_thread.html' with form=form %} -->

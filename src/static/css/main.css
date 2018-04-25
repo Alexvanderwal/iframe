@@ -280,9 +280,12 @@ figcaption {
 
 }
 
-.nav:hover figcaption {
+.nav:hover figcaption,
+.nav:focus figcaption {
     left: 0;
 }
+
+
 
 .user-menu-preview {
     position: relative;

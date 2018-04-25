@@ -15,6 +15,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions, generics
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+
+from django.utils.decorators import method_decorator
 
 import sys
 from os import path
@@ -96,7 +99,7 @@ class ThreadListCreateView(ListView, ModelFormMixin):
             context['forms'] = [self.form, self.initial_post_form]
         return context
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class ThreadDetailView(FormMixin, DetailView):
     model = Thread
     form_class = PostForm
@@ -107,6 +110,7 @@ class ThreadDetailView(FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        print(self.request.user)
         if self.request.user.is_authenticated:
             context['form'] = PostForm(initial={'user': self.request.user, 'thread': self.object})
         return context
