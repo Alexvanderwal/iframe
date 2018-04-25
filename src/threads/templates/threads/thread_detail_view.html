@@ -32,7 +32,7 @@
             {% include 'threads/thread_post_detail_view.html' with post=post %}
         {% endfor %}
     </ul>
-    <form action="{% if action %}{{ action }}{% else %}.{% endif %}"
+    <form action="{% if action %}{{ action }}{% else %}{% url 'threads:detail' slug=object.slug %}{% endif %}"
       enctype="multipart/form-data" method="post" class="pt-2" id="default-form">
       {% csrf_token %}
       {{ form }}
