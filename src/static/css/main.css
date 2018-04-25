@@ -182,7 +182,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size:
 } */
 
-.thread-content h3 {
+.thread-content h3, .thread-content h2 {
 font-size: 1.7em;
 }
 
@@ -315,7 +315,7 @@ figcaption {
     box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.4);
 }
 
-h3 {
+h3, h2 {
     margin: 0;
 }
 
