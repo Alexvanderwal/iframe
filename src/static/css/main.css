@@ -387,6 +387,9 @@ h3, h2 {
     box-shadow: 0 10px 5px -3px rgba(0,0,0,0.1);
 }
 
+.thread-view-content h3, .thread-view-content h2 {
+    margin: 0;
+}
 
 .thread-view h3 {
     display: inline-block;
