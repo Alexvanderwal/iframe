@@ -6,7 +6,7 @@
     //   alert("Ctrl + B shortcut combination was pressed");
     // } else if (e.ctrlKey && e.altKey && e.which == 89) {
     //   alert("Ctrl + Alt + Y shortcut combination was pressed");
-    if (e.shiftKey && e.which == 220) {
+    if ((e.shiftKey && e.which == 220) || e.which == 27) {
       let link = document.querySelector("#url").innerHTML;
       console.log(link);
       var tref = document.querySelector(

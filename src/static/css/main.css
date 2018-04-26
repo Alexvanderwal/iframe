@@ -316,8 +316,12 @@ figcaption {
 }
 
 h3, h2 {
-    margin: 0;
+    
     display: inline-block;
+}
+
+.main-content h2 {
+    margin: 0;
 }
 
 .create-thread {
