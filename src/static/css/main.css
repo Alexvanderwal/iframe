@@ -320,7 +320,7 @@ h3, h2 {
     display: inline-block;
 }
 
-.main-content h2 {
+.main-content h2, .main-content h3{
     margin: 0;
 }
 
