@@ -14,11 +14,10 @@
 {#{% endblock header_message %}#}
 {##}
 
-<script src="{% static 'javascript/csrf.js' %}" > </script>
 <span id='url' style='display:none'> {% url 'threads:detail' slug=object.slug %} </span>
-<script src="{% static 'javascript/threads.js' %}"></script>
-<script src="{% static 'javascript/main.js' %}" > </script>
 
+
+    <button id="testing">klik</button>
     <span class="screen-reader-text">You are currently viewing the thread</span>
     <h2> {{ object.title }} </h2>
     <span class="screen-reader-text">To go back, use shift + \ also known as (|) </span>
@@ -39,8 +38,44 @@
     </form>
     {% endif %}
 
-    <!-- {{ user.is_authenticated }}
-    {% if user.is_authenticated %} -->
+    {{ user }}
+    {% if user.is_authenticated %}
         <!-- {% include 'threads/respond_to_thread.html' with form=form %} -->
-    <!-- {% endif %} -->
+   {% endif %}
+  <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+<script>
+    console.log('heya')
+    var threadSocket = new WebSocket(
+    'ws://' + window.location.host + '/ws/thread/{{ object.slug }}/');
+{#     document.querySelector("#default-form").action =  'ws://' + window.location.host + '/ws/thread/{{ object.slug }}/';#}
+       document.querySelector("#default-form").onsubmit = function (e) {
+         threadSocket.send(JSON.stringify({
+                'content': CKEDITOR.instances["id_content"].getData()
+            }))
 
+      console.log(document.querySelector("#default-form"))
+           console.log(CKEDITOR.instances["id_content"].getData())
+           e.preventDefault()
+       }
+
+{#    document.querySelector("#default-form").onsubmit = function(e){#}
+{#        console.log('test')#}
+{#        console.log(e)#}
+{#        e.preventDefault()#}
+{#    }#}
+    threadSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        console.log(data)
+    };
+
+
+    var testObj = document.getElementById("testing");
+   testObj.onclick = function () {
+       data = CKEDITOR.instances["id_content"].getData();
+       threadSocket.send(JSON.stringify({
+            'message': data
+        }))
+   }
+
+</script>

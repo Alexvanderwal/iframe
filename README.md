@@ -1,3 +1,42 @@
+# Iframe
+
+## Wat is Django?
+Django is een 'high-level' python web-framework, ontworpen om snelle ontwikkeling d.m.v een pragmatisch ontwerp aan te moedigen.
+Zoals bij de meeste frameworks is hier het doel om ontwikkelaars de mogelijkheid te geven om zich te focusen op de nieuwe en unieke delen van hun project. Dit wordt behaald door veel van de lastige en vervelende aspecten van web-design uit handen te nemen, zonder dat deze aspecten niet aangepast kunnen worden.
+
+Net zoals de meeste webframeworks, volgt django het MVC pattroon nauw, maar gebruikt wel hun eigen logica in de implementatie. Omdat django veelal wordt gebruikt met Models, Templates & Views wordt het dan ook een MTV framework genoemt:
+
+* M (Models) - De data access laag. Deze laag bevat alles over de data, hoe het aangeroepen moet worden, hoe het gevalideert moet worden, welk gedrag het heeft en welke relaties het heeft. Hier valt dus ook het uitgeschrijven naar een persistent datalaag onder.
+
+* T (Template) - De presentatie laag. Deze laag bevat presentatie logica, hoe iets gepresenteert moet worden op een webpagina.
+
+* V (View) - De business logica laag. Deze laag bevat de logica welke de modellen aanroept en deze data verwijst naar de juiste template. 
+
+## Veiligheid
+Django streeft ervoor om 'out of the box' veiligheids maatregelen aan te bieden, bijvoorbeeld voor:
+* SQL Injectie.  De formulieren worden automatisch gecontroleerd of de input wel correct is en vervolgens gecleaned (waardoor SQL queries worden verwijderd)
+* Clickjacking. D.M.V een [middleware](https://docs.djangoproject.com/en/2.0/ref/middleware/#django.middleware.clickjacking.XFrameOptionsMiddleware) geeft django de X-Frame header mee welke site rendering in een frame tegen gaat.
+* SSL/HTTPs forcering
+* Host header - Accepteert alleen maar requests van betrouwbare hosts  
+Django is vaak 1 van de eerste frameworks om te reageren op een nieuwe gevonden kwetsbaarheid. 
+
+In het volgende [artikel](https://www.contextis.com/blog/make-a-django-app-insecure-its-not-easy-and-thats-a-good-thing) wordt er gefocust op het onveilig maken van Django, wat vrij moeilijk leek te zijn.
+
+
+## Waarom Django?
+### Tijds getest
+Django bestaat (vanaf 2018) 13 jaar, wat een erg lange tijd is voor een project, laat staan voor 1 welke nog zoveel gebruikt wordt. Dit betekend ook dat er al veel tutorials & blogs zijn geschreven over complexere use cases in django.
+
+### Schaalbaarheid & combineerbaarheid
+Over de jaren heen hebben verschillende groten projecten zoals [disqus](https://stackshare.io/disqus/disqus
+), [instagram](https://stackshare.io/instagram/instagram) en [pinterest]() Django in hun technologie stack gebruikt. Dit brengt als bonus met zich mee dat er door zulke partijen veel middleware (en of dergelijke pakketen) ontwikkelt zijn voor de intergratie met andere frameworks. 
+
+### Het ecosysteem
+Zoals de Python gemeenschap in het algemeen, voegt de Django gemeenschap veel utilities & pakketten toe aan PyPI (python package manager) voor gratis gebruik. Ook merk ik dat de gemeenschap van Django veel vriendelijker is op plaatsen zoals IRC, dan andere gemeenschappen (Node bijvoorbeeld). Dit is mede mogelijk door DSF (Django Software Foundation), welke duidelijk aangeven wat voor'n gemeenschap zijn ogen te zijn. Hierdoor zie je veel gemeenschappen zoals [Django Girls](https://djangogirls.org/). Ook zie ik veel begrip vanuit de gemeenschap voor nieuwe Django ontwikkelaars.  
+
+# Oefeningen vanuit de Udemy course
+Omdat de Udemy course meer gericht is op het conceptuele achter django functies etc dan op een daadwerkelijke project en de context. Om deze reden hebben ik besloten de geleerde concepten in een `cookbook` over te nemen, waar per concept het ideologie staat uitgelegt. 
+
 # iframe
 A Full-fledged forum build upon the Django framework.
 ![Image](http://puu.sh/A3Bbn/614b5ccc92.png) 
@@ -70,5 +109,11 @@ a reality.
 
 This will be without a doubt a difficult project, but seeing as it will most likely be able to keep me busy for 2 weeks,
 and will test my knowledge further. 
+
+
+
+### Web Sockets
+https://channels.readthedocs.io/en/latest/installation.html
+Weaves Asynch code within the Django synchronous core. Replaces the webserver so you'll be able to server; webkSockets along side http
 
 

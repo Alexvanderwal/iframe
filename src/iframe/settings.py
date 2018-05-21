@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 DJANGO_PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -67,6 +68,7 @@ INSTALLED_APPS = [
     'threads',
     'categories',
     'users',
+    'channels',
 
 
 ]
@@ -122,7 +124,19 @@ TEMPLATES = [
     },
 ]
 
+# Channels
+ASGI_APPLICATION = 'iframe.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)]
+        }
+    }
+}
+
 WSGI_APPLICATION = 'iframe.wsgi.application'
+
 
 
 # Database
@@ -243,3 +257,5 @@ CKEDITOR_CONFIGS = {
         ]),
     }
 }
+
+

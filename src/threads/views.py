@@ -99,7 +99,7 @@ class ThreadListCreateView(ListView, ModelFormMixin):
             context['forms'] = [self.form, self.initial_post_form]
         return context
 
-@method_decorator(csrf_exempt, name='dispatch')
+
 class ThreadDetailView(FormMixin, DetailView):
     model = Thread
     form_class = PostForm

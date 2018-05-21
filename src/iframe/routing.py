@@ -9,5 +9,5 @@ application = ProtocolTypeRouter({
         URLRouter(
             threads.routing.websocket_urlpatterns
         )
-    )
+    ),
 })

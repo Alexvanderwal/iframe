@@ -205,6 +205,9 @@ font-size: 1.7em;
     box-shadow: var(--grid-plane-shadow);
 }
 
+.nav h2 {
+    color: white;
+}
 
 
 .thread-list {

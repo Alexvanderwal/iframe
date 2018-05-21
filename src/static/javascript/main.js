@@ -1,4 +1,6 @@
 {
+
+
   document.querySelector("#thread-content").onkeyup = function(e) {
     // if (e.which == 77) {
     //   alert("M key was pressed");
@@ -51,9 +53,16 @@
       threadContent.style.removeProperty("display");
     }
 
+    //https://blog.heroku.com/in_deep_with_django_channels_the_future_of_real_time_apps_in_django
+    // The websocket protocol comes in secure & secure flavors, we need to choose the correct one
+  var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+  // // Shim for routers that time-out, ensures that socket automatically reconnects. source: https://github.com/heroku-examples/python-websockets-chat
+  // var chat_socket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/chat" + window.location.pathname);
     if (window.fetch) {
       console.log(object.target);
-      fetch(object.href).then(function(data) {
+      fetch(object.href, {
+        credentials: 'include'
+      }).then(function(data) {
         console.log(data);
         var dummyDiv = document.querySelector("#thread-content");
         data.text().then(function(text) {
@@ -62,5 +71,8 @@
       });
     }
     event.preventDefault ? event.preventDefault() : (event.returnValue = false);
+
+
+
   }
 }
