@@ -6,7 +6,14 @@ label[for='id_content'] {
     width: 100%;
 }
 
-
+.profile-image {
+    display: inline-block;
+    height: 240px;
+    width: 240px;
+}
+body {
+    color: rgba(0,0,0,.84);
+}
 
 :root {
     --grid-plane-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.4);
@@ -26,6 +33,9 @@ a {
     color: #FFFFFF;
 }
 
+.user-profile a {
+    color:  rgba(0,0,0,.84);
+}
 .main-menu li {
     list-style: none;
     border-bottom: 1px solid rgba(255,255,255,.225);
@@ -101,14 +111,18 @@ height: .6em;
   background-color: #bbb;
   border-radius: 50%;
   position: absolute;
-  top: 1.6em;
-  left: 2.7em;
+  bottom:5px;
+  right: 0;
 }
 
 
 
 .green {
     background-color: rgba(30,190,165,0.96);
+}
+
+.red {
+    background-color: crimson;
 }
 
 h1 {
@@ -119,6 +133,16 @@ h1 {
 .user-name {
     font-size: 1em;
 }
+
+.user-name.profile {
+    width: fit-content;
+    font-size: 4em;
+
+    border-bottom: 1px solid red;
+    box-shadow: 0px 1px -0.7px 0px rgba(0,0,0,0.3);
+}
+
+
 
 .category-name {
     color: #24305E;
@@ -222,6 +246,12 @@ font-size: 1.7em;
 .thread-view-content {
     padding-bottom: 1em;
   padding-left: 1em;
+  
+}
+
+.thread-view-content.profile {
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.3);
 }
 
 .header h3{
@@ -238,6 +268,11 @@ font-size: 1.7em;
 
     position: relative;
 
+}
+
+.user-preview.top.profile {
+    grid-column: span 2;
+    grid-row: 1;
 }
 
 .user-actions-bar {
@@ -329,6 +364,52 @@ h3, h2 {
 
 .main-content h2, .main-content h3{
     margin: 0;
+}
+
+.profile.header {
+    grid-column: span 2;
+}
+
+.profile h1 {
+    padding-left: .6em;
+}
+
+.form-field {
+    font-size: 16px;
+    display: block;
+    font-family: 'Rubik', sans-serif;
+    width: 100%;
+    padding: 10px 1px;
+    border: 0;
+    border-bottom: 1px solid #747474;
+    outline: none;
+}
+
+.btn {
+    padding: 0.5em;
+    background-color: #F67C6C;
+    border: none;
+    font-size: 1.1em;
+    color: white;
+    border-radius: 8px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.btn.secondary {
+    background-color: #F8E9A1;
+    color: black;
+}
+
+.user-profile{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 30%;
+    grid-gap: 1em;
+    overflow-y: scroll;
+    grid-column: 2 / span 4;
+    background-color: #A8D0E6;
+    padding: 1.4em;
 }
 
 .create-thread {
@@ -516,10 +597,6 @@ main {
     
     box-shadow: 0 3px 10px -3px rgba(0,0,0,0.3);
 }
-.user-preview.preview-thread-content .dot {
-   left: 1.7em;
-   top: 2.3em;
-}
 
 .thread-content p {
     padding: 0;
@@ -542,7 +619,10 @@ main {
     color: var(--shade-of-blue);
 }
 
-
+.user-description.profile {
+    padding-top: .6em;
+    max-width: 24em;
+}
 
 
 
@@ -572,6 +652,7 @@ main {
 
 .user-image-display {
     margin: auto 0;
+    position: relative;
 }
 
 .name-display {

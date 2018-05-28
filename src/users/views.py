@@ -22,6 +22,11 @@ class UserCreateView(CreateView):
     template_name = 'users/user_registration.html'
     success_url = '/'
 
+
+    def get_context_data(self, *args, **kwargs):
+
+        context['categories'] = self.Category.objects.all()
+        
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
@@ -92,8 +97,10 @@ class UserAndProfileUpdateView(UpdateView):
         else:
             return self.render_to_response(self.get_context_data(form=form))
 
-    def form_invalid(self, form):
-        print('komt hier ofzo')
+    def form_invalid(self, form, *args, **kwargs):
+        response = super().form_invalid(form, *args, **kwargs)
+        print(form)
+        return response
 
 
 @login_required

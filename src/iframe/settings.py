@@ -49,6 +49,7 @@ FILE_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'uploads/')
 
 # Application definition
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -118,11 +119,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'iframe.context_processors.categories'
 
             ],
         },
     },
 ]
+
+
 
 # Channels
 ASGI_APPLICATION = 'iframe.routing.application'

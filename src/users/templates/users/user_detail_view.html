@@ -1,12 +1,39 @@
-{% extends 'master.html' %}
-{% load thumbnail %}
-{% load i18n %}
+{% extends 'master.html' %} {% load thumbnail %} {% load i18n %} 
+ {% block main_class %} user-profile {% endblock %} {% block content %}
+ <div class='user-preview top profile'>
+        <div class='user-image-display'>
+                <div class='profile-image' style="background-image: url( {{ object.user.profile.avatar|thumbnail_url:'profile_avatar' }})">
+                </div>
+                <span class="dot {% if object.online %}green{% else %}red{% endif %}"></span>
+         
+            </div>
+            {% if not object.online %}<div> {% trans 'Last seen on' %} {{ object.user.last_login|date }}</div>{% endif %}
+            <div class='name-display'>
+                <span class="screen-reader-text">Started by </span>
+                <span class="user-name profile"> {{ object.user.username }}</span>
+                <span class="screen-reader-text">who is currently online.</span>
+                <span class="screen-reader-text">Has as status </span>
+                <div class="user-description profile">
+                    {{ object.user.profile.description }}</div>
+            </div>
+        </div>
+ {% block header_message %}
 
-{% block header_message %}
-    {% trans "Profile of " %} {{ object.user.username|title }}
 {% endblock %}
-{% block content %}
-    <div class="row">
+
+    <header class='profile header'> <h1> Users latest posts </h1> </header>
+    {% for post in object.user.posts.all %}
+    <div class='thread-view-content profile' ><a class="" onclick='getMoreUserInfo( this, event )' href="{% url 'threads:detail' slug=post.thread.slug %}#{{ post.id }}" >
+        <header> 
+                <h2>{{ post.thread.title }}</h2> in <h3>  <span class='category-name'>{{ post.thread.category }}</span></h3>
+                <div>{{ post.get_date }}</div>  
+        </header>
+        <div> {{ post.content|safe  }}</div>
+    </a>
+    </div>
+    {% endfor %}
+
+<!-- <div class="row">
         <div class="col-12 col-md-3 col-lg-3">
             <div class="d-flex flex-column" id="user-side-bar">
              <img src="{{ object.avatar|thumbnail_url:'profile_avatar' }}" class="rounded" style="max-width:170px;" >
@@ -40,6 +67,6 @@
             {% endfor %}
         </div>
         </div>
-    </div>
+    </div> -->
 
 {% endblock content %}

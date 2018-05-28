@@ -85,10 +85,8 @@ class ThreadListCreateView(ListView, ModelFormMixin):
 
         falseobj = Thread.objects.first()
         self.Category = falseobj.category.__class__
-
         # Just include the form
         context = super(ThreadListCreateView, self).get_context_data(*args, **kwargs)
-        context['categories'] = self.Category.objects.all()
         if self.kwargs.get('slug'):
             context['category'] = self.Category.objects.get(slug=self.kwargs.get('slug'))
         else:

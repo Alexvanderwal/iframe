@@ -13,17 +13,16 @@
 {#    {% trans 'Thread:' %} {{ object.title }}#}
 {#{% endblock header_message %}#}
 {##}
-
+<span id="thread-id" style='display:none'> {{ object.id }} </span>
 <span id='url' style='display:none'> {% url 'threads:detail' slug=object.slug %} </span>
 
 
-    <button id="testing">klik</button>
     <span class="screen-reader-text">You are currently viewing the thread</span>
     <h2> {{ object.title }} </h2>
     <span class="screen-reader-text">To go back, use shift + \ also known as (|) </span>
 
  
-    <ul class='thread-messages'>
+    <ul class='thread-messages' id='thread-messages'>
         {% for post in object.post_set.all %}
             {% include 'threads/thread_post_detail_view.html' with post=post %}
         {% endfor %}
@@ -31,7 +30,7 @@
 
     {% if request.user.is_authenticated %}
     <form action="{% if action %}{{ action }}{% else %}{% url 'threads:detail' slug=object.slug %}{% endif %}"
-      enctype="multipart/form-data" method="post" class="pt-2" id="default-form">
+      enctype="multipart/form-data" method="post" class="form-class" id="default-form">
       {% csrf_token %}
       {{ form }}
       <input class='btn btn-default' type="Submit" value="Submit">
@@ -48,10 +47,11 @@
     console.log('heya')
     var threadSocket = new WebSocket(
     'ws://' + window.location.host + '/ws/thread/{{ object.slug }}/');
-{#     document.querySelector("#default-form").action =  'ws://' + window.location.host + '/ws/thread/{{ object.slug }}/';#}
        document.querySelector("#default-form").onsubmit = function (e) {
+        console.log(e)
          threadSocket.send(JSON.stringify({
-                'content': CKEDITOR.instances["id_content"].getData()
+                'content': CKEDITOR.instances["id_content"].getData(),
+                'id': document.getElementById('thread-id').innerHTML
             }))
 
       console.log(document.querySelector("#default-form"))
@@ -59,14 +59,52 @@
            e.preventDefault()
        }
 
-{#    document.querySelector("#default-form").onsubmit = function(e){#}
-{#        console.log('test')#}
-{#        console.log(e)#}
-{#        e.preventDefault()#}
-{#    }#}
+
     threadSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
-        console.log(data)
+        var li = document.createElement('li')
+        li.id = data.post_id
+      
+        var userContent = document.createElement('div')
+        userContent.classList.add("usercontent")
+        var userLink = document.createElement('a')
+        userLink.classList.add('user-preview')
+        userLink.classList.add('preview-thread-content')
+        userLink.href = '/'
+        var userImage = document.createElement('div')
+        userImage.classList.add('user-image-display')
+        var thumbnailImage = document.createElement('div')
+        thumbnailImage.classList.add('thumbnail-image')
+        thumbnailImage.style.backgroundImage = "url(" + data.user.avatar + ")"
+        var dot = document.createElement('span')
+        userImage.appendChild(thumbnailImage)
+        userImage.appendChild(dot)
+
+        var nameDisplay = document.createElement('div')
+        nameDisplay.classList.add('name-display')
+        var fullName = document.createElement('div')
+        var startedBy = document.createElement('span')
+        startedBy.innerHTML = 'Started by '
+        var userName = document.createElement('span')
+        userName.classList.add('user-name')
+        userName.innerHTML = data.user.username
+        var onDate = document.createElement('span')
+        onDate.innerHTML = ' ' + data.user.time
+        fullName.appendChild(startedBy)
+        fullName.appendChild(userName)
+        fullName.appendChild(onDate)
+        nameDisplay.appendChild(fullName)
+
+        userLink.appendChild(userImage)
+        userLink.appendChild(nameDisplay)
+
+     
+        userContent.appendChild(userLink)
+        console.log(li)
+              
+        li.appendChild(userContent)
+        var ul = document.getElementById('thread-messages')
+        ul.appendChild(li)
     };
 
 

@@ -1,8 +1,8 @@
-{% block form_title %}
-    <h4> {{  title }} </h4>
-{% endblock form_title %}
+{% if form_title %}
+    <h4> {{  form_title }} </h4>
+{% endif %}
 <form action="{% if action %}{{ action }}{% else %}.{% endif %}"
-      enctype="multipart/form-data" method="post" class="pt-2" id="default-form">
+      enctype="multipart/form-data" method="post" class="form-class" {% if onclick %} onclick='{{onclick}}' {%endif%} id="{% if action %}{{ action }}{%else%}default-form {%endif%}">
     {% csrf_token %}
     {% if forms %}
         {% for f in forms %}
