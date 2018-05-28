@@ -67,7 +67,7 @@ class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='likes', blank=True)
-    content = RichTextUploadingField()
+    content = models.TextField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='posts')
     thread = models.ForeignKey('threads.Thread',  null=True, blank=True)
 

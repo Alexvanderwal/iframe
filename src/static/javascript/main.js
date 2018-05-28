@@ -67,20 +67,17 @@
           var script = document.createElement("script");
           script.innerHTML = `
       
-          console.log(document.querySelectorAll(".form-class")[0])
+          console.log(document.querySelectorAll(".form-class")[1])
           var threadSocket = new WebSocket(
           'ws://' + window.location.host + '/ws/thread/${object.id}/');
-          document.querySelectorAll(".form-class")[0].onsubmit = function (e) {
-
+          document.querySelectorAll(".form-class")[1].onsubmit = function (e) {
               e.preventDefault()
               console.log(e)
                threadSocket.send(JSON.stringify({
-                      'content': CKEDITOR.instances["id_content"].getData(),
+                      'content': document.querySelectorAll("textarea")[1].value,
                       'id': document.getElementById('thread-id').innerHTML
                   }))
       
-            console.log(document.querySelector("#default-form"))
-                 console.log(CKEDITOR.instances["id_content"].getData())
                  e.preventDefault()
              }
           console.log(threadSocket)
